@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <!-- Required meta tags -->
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'meetup_app/style.css' %}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  </head>
+  <body>
+      <nav class="navbar navbar-expand navbar-light bg-light">
+          <div class="container">
+          <div class="nav navbar-nav">
+              <a class="nav-item nav-link active" href="/home">Dojo Activity Center <span class="sr-only">(current)</span></a>
+              <a class="nav-item nav-link" href="#">Welcome {{user.first_name}}</a>
+              <a class="nav-item nav-link" href="/logout">Logout</a>
+          </div>
+        </div>
+      </nav>
+      <div class="container">
+        <table>
+            <tr>
+                <th>Activity</th>
+                <th>Date and TIme</th>
+                <th>Duration</th>
+                <th>Event Coodinator</th>
+                <th>Number of Participants</th>
+                <th>Actions</th>
+            </tr>
+            {% for activity in activities %}
+            <tr>
+                <td><a href="/activity/{{activity.id}}">{{activity.title}}</a></td>
+                <td>{{activity.date}} @ {{activity.time}}</td>
+                <td>{{activity.duration_number}} {{activity.duration}}</td>
+                <td>{{activity.creator.first_name}}</td>
+                {% if activity.number_of_participants == null %}
+                <td>0</td>
+                {% endif %}
+                {% if activity.number_of_participants != null %}
+                
+                <td>{{activity.number_of_participants.count}}</td>
+                {% endif %}
+                {% if activity.creator == user %}
+                <td><a href="/delete/{{activity.id}}">Delete</a></td>
+                {% endif %}
+                {% if activity.creator != user %}
+                <td><a href="/join/{{activity.id}}">Join</a></td>
+                {% endif %}
+                {% if activity.creator != user %}
+                <td><a href="/leave/{{activity.id}}">Leave</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="/new">Add new Activity!</a>
+      </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  </body>
+</html>
